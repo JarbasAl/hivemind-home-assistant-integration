@@ -1,4 +1,4 @@
-"""Tests for HiveMind Home Assistant Integration api."""
+"""Tests for HiveMind Integration api."""
 import asyncio
 
 import aiohttp

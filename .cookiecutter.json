@@ -3,7 +3,7 @@
   "_template": "gh:oncleben31/cookiecutter-homeassistant-custom-component",
   "class_name_prefix": "HiveMind",
   "domain_name": "hivemind",
-  "friendly_name": "HiveMind Home Assistant Integration",
+  "friendly_name": "HiveMind Integration",
   "github_user": "JarbasAI",
   "project_name": "hivemind-home-assistant-integration",
   "test_suite": "yes",

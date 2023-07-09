@@ -1,1 +1,1 @@
-"""Tests for HiveMind Home Assistant Integration integration."""
+"""Tests for HiveMind Integration integration."""

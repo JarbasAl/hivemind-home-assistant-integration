@@ -1,4 +1,4 @@
-"""Test HiveMind Home Assistant Integration setup process."""
+"""Test HiveMind Integration setup process."""
 import pytest
 from custom_components.hivemind import (
     async_reload_entry,

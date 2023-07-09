@@ -1,4 +1,4 @@
-# HiveMind Home Assistant Integration
+# HiveMind Integration
 
 [![GitHub Release][releases-shield]][releases]
 [![GitHub Activity][commits-shield]][commits]
@@ -27,7 +27,7 @@
 4. Download _all_ the files from the `custom_components/hivemind/` directory (folder) in this repository.
 5. Place the files you downloaded in the new directory (folder) you created.
 6. Restart Home Assistant
-7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "HiveMind Home Assistant Integration"
+7. In the HA UI go to "Configuration" -> "Integrations" click "+" and search for "HiveMind Integration"
 
 Using your HA configuration directory (folder) as a starting point you should now also have this:
 

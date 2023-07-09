@@ -1,4 +1,4 @@
-"""Global fixtures for HiveMind Home Assistant Integration integration."""
+"""Global fixtures for HiveMind Integration integration."""
 from unittest.mock import patch
 
 import pytest

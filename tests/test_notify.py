@@ -1,4 +1,4 @@
-"""Test HiveMind Home Assistant Integration switch."""
+"""Test HiveMind Integration switch."""
 from unittest.mock import call
 from unittest.mock import patch
 
