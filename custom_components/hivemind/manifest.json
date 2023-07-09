@@ -8,7 +8,7 @@
   "iot_class": "assumed_state",
   "loggers": ["hivemind_bus_client"],
   "requirements": [
-    "git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git@dev#hivemind_bus_client==0.0.4a2",
+    "git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git@dev#hivemind_bus_client==0.0.4a3",
     "git+https://github.com/JarbasHiveMind/poorman_handshake.git@dev#poorman_handshake==0.2.1",
     "PGPy==0.6.0",
     "cryptography==41.0.1",

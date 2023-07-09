@@ -40,8 +40,8 @@ class HiveMindNotificationService(BaseNotificationService):
         #  FileNotFoundError: [Errno 2] No such file or directory: '/root/.config/hivemind/unnamed-node.asc'
         identity_file = JsonStorage(f"{os.path.dirname(__file__)}/_identity.json")
         self.bus.connect(identity=NodeIdentity(identity_file))
-        self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
-        self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
+        #self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
+        #self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
 
     def handle_tts_start(self, message):
         _LOGGER.info("TTS started on OVOS device")
