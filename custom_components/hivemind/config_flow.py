@@ -20,7 +20,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Required("key"): str,
         vol.Required("pswd"): str,
         vol.Required("hm_host"): str,
-        vol.Optional("hm_port", default=8181): int,
+        vol.Optional("hm_port", default=5678): int,
         vol.Optional("self_signed", default=False): bool,
     }
 )

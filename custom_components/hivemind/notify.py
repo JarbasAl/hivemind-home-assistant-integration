@@ -21,13 +21,13 @@ def get_service(
         discovery_info: DiscoveryInfoType | None = None,
 ) -> HiveMindNotificationService:
     """Get the HiveMind notification service."""
-    return HiveMindNotificationService(hass.data["hivemind"])
+    return HiveMindNotificationService(**hass.data["hivemind"])
 
 
 class HiveMindNotificationService(BaseNotificationService):
     """The HiveMind Notification Service."""
 
-    def __init__(self, key: str, pswd: str, hm_host: str, hm_port: int = 8181, self_signed: bool = False, **kwargs) -> None:
+    def __init__(self, key: str, pswd: str, hm_host: str, hm_port: int = 5678, self_signed: bool = False, **kwargs) -> None:
         """Initialize the service."""
         self.key = key
         self.pswd = pswd

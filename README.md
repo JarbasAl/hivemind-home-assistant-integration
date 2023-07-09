@@ -45,10 +45,15 @@ In `configuration.yaml`:
 
 ```yaml
 hivemind:
-  host: 192.168.42.42 # Replace with your IP/hostname
+  hm_host: wss://192.168.1.8
+  hm_port: 5678
+  self_signed: true
+  key: a821bc4b34590a002570f0ed7808b886
+  password: 31e6a37e472a657609ef33f237d5b286
+
 notify:
   - platform: hivemind
-    name: mark2 # Name it whatever you want
+    name: mark2
 ```
 
 Then call `notify.mark2` with a message you'd like the HiveMind Voice Assistant to speak.
