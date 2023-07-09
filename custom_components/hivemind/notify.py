@@ -10,7 +10,7 @@ from homeassistant.components.notify import BaseNotificationService
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.typing import DiscoveryInfoType
-from hivemind_bus_client import Message
+from ovos_bus_client import Message
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
