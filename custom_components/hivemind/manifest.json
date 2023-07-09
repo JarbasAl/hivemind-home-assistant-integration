@@ -3,7 +3,7 @@
   "name": "HiveMind",
   "codeowners": ["@JarbasAI"],
   "config_flow": false,
-  "documentation": "https://github.com/JarbasHiveMind/hivemind_websocket_client",
+  "documentation": "https://github.com/JarbasHiveMind/hivemind-home-assistant-notify",
   "integration_type": "device",
   "iot_class": "assumed_state",
   "loggers": ["hivemind_bus_client"],
