@@ -1,8 +1,10 @@
 """HiveMind notification platform."""
 import logging
+import os
 from typing import Any
 
 from hivemind_bus_client.client import HiveMessageBusClient
+from hivemind_bus_client.identity import NodeIdentity
 from hivemind_bus_client.message import HiveMessageType, HiveMessage
 from homeassistant.components.notify import (
     ATTR_DATA,
@@ -11,6 +13,7 @@ from homeassistant.components.notify import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
+from json_database import JsonStorage
 from ovos_bus_client import Message
 
 _LOGGER = logging.getLogger(__name__)
@@ -33,7 +36,10 @@ class HiveMindNotificationService(BaseNotificationService):
                                         host=self.host,
                                         useragent="HomeAssistantV0.0.1",
                                         self_signed=self.self_signed)
-        self.bus.connect()
+        # NOTE: we explicitly pass a identity file to work around HA being root
+        #  FileNotFoundError: [Errno 2] No such file or directory: '/root/.config/hivemind/unnamed-node.asc'
+        identity_file = JsonStorage(f"{os.path.dirname(__file__)}/_identity.json")
+        self.bus.connect(identity=NodeIdentity(identity_file))
         self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
         self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
 
