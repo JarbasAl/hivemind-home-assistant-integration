@@ -28,28 +28,23 @@ def get_service(
 class HiveMindNotificationService(BaseNotificationService):
     """The HiveMind Notification Service."""
 
-    def __init__(self, key: str, pswd: str, hm_host: str, hm_port: int = 5678, self_signed: bool = False, **kwargs) -> None:
+    def __init__(self, key: str, pswd: str, host: str, port: int = 5678, self_signed: bool = False, **kwargs) -> None:
         """Initialize the service."""
         self.key = key
         self.pswd = pswd
-        self.hm_port = hm_port
-        self.hm_host = hm_host
+        self.hm_port = port
+        self.hm_host = host
         self.self_signed = self_signed
         self.bus = None
 
-    def connect(self):
-        try:
-            self.bus = HiveMessageBusClient(key=self.key,
-                                            password=self.pswd,
-                                            port=self.hm_port,
-                                            host=self.hm_host,
-                                            useragent="HomeAssistantV0.0.1",
-                                            self_signed=self.self_signed)
-            self.bus.connect()
-            return True
-        except:
-            _LOGGER.error("Failed to connect to HiveMind")
-            return False
+    def _connect(self):
+        self.bus = HiveMessageBusClient(key=self.key,
+                                        password=self.pswd,
+                                        port=self.hm_port,
+                                        host=self.hm_host,
+                                        useragent="HomeAssistantV0.0.1",
+                                        self_signed=self.self_signed)
+        self.bus.connect()
 
     def _reconnect(self):
         if self.bus:
@@ -72,14 +67,13 @@ class HiveMindNotificationService(BaseNotificationService):
                                   payload=Message("speak",
                                                   {"utterance": message, "lang": lang}))
             self.bus.emit(payload)
-            return
-        except ConnectionRefusedError:
-            _LOGGER.log(
-                level=1, msg="Could not reach this instance of HiveMind", exc_info=True
-            )
-
-        except ValueError:
+        except:
             _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
 
-        # didn't return -> connection is lost
-        self._reconnect()
+            try:
+                self._reconnect()
+                self.bus.emit(payload)
+            except:
+                _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
+
+

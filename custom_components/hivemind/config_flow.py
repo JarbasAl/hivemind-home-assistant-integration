@@ -4,39 +4,26 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import voluptuous as vol
 from hivemind_bus_client.client import HiveMessageBusClient
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
-from .const import DOMAIN
+from .const import DOMAIN, HM_SCHEMA
 
 _LOGGER = logging.getLogger(__name__)
 
-STEP_USER_DATA_SCHEMA = vol.Schema(
-    {
-        vol.Required("key"): str,
-        vol.Required("pswd"): str,
-        vol.Required("hm_host"): str,
-        vol.Optional("hm_port", default=5678): int,
-        vol.Optional("self_signed", default=False): bool,
-        vol.Optional("hm_name", default="HiveMind Listener"): str,
-    }
-)
 
-
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
+async def _validate_input(data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
 
-    Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
+    Data has the keys from HM_SCHEMA with values provided by the user.
     """
     try:
         hm = HiveMessageBusClient(
             key=data["key"],
             password=data["pswd"],
-            host=data["hm_host"],
-            port=data["hm_port"],
+            host=data["host"],
+            port=data["port"],
             self_signed=data["self_signed"]
         )
         hm.connect()
@@ -57,8 +44,8 @@ class HiveMindConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if info is not None:
             try:
-                info = await validate_input(self.hass, info)
-                return self.async_create_entry(title=info["hm_name"],
+                info = await _validate_input(info)
+                return self.async_create_entry(title="HiveMind Node",
                                                data=info)
             except CannotConnect:
                 errors["base"] = "cannot_connect"
@@ -69,7 +56,7 @@ class HiveMindConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "unknown"
 
         return self.async_show_form(
-            step_id="user", data_schema=STEP_USER_DATA_SCHEMA
+            step_id="user", data_schema=HM_SCHEMA
         )
 
 
