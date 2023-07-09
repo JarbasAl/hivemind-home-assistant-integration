@@ -1,4 +1,4 @@
-"""Config flow for OVOS integration."""
+"""Config flow for HiveMind integration."""
 from __future__ import annotations
 
 import logging
@@ -11,14 +11,17 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
-from .notify import OvosNotificationService
+from .notify import HiveMindNotificationService
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
-        vol.Required("host"): str,
-        vol.Optional("ovos_port", default=8181): int,
+        vol.Required("key"): str,
+        vol.Required("pswd"): str,
+        vol.Required("hm_host"): str,
+        vol.Optional("hm_port", default=8181): int,
+        vol.Optional("self_signed", default=False): bool,
     }
 )
 
@@ -30,7 +33,13 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     """
     try:
         hub: Any = await hass.async_add_executor_job(
-            OvosNotificationService(data["host"], data["ovos_port"]).authenticate
+            HiveMindNotificationService(
+                data["key"],
+                data["pswd"],
+                data["hm_host"],
+                data["hm_port"],
+                data["self_signed"]
+            ).authenticate
         )
         if not await hub.authenticate():
             raise InvalidAuth
@@ -38,11 +47,15 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
         raise CannotConnect() from exc
 
     # Return info that you want to store in the config entry.
-    return {"host": hub.ovos_ip, "ovos_port": hub.ovos_port}
+    return {"hm_host": hub.hm_host,
+            "hm_port": hub.hm_port,
+            "key": hub.key,
+            "pswd": hub.pswd,
+            "self_signed": hub.self_signed}
 
 
-class OvosConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for OVOS."""
+class HiveMindConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for HiveMind"""
 
     VERSION = 1
 

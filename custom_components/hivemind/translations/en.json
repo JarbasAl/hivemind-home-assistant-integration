@@ -11,9 +11,11 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host",
-          "password": "Password",
-          "username": "Username"
+          "hm_host": "HiveMind Host",
+          "hm_port": "HiveMind Port",
+          "key": "HiveMind Access Key",
+          "pswd": "HiveMind Password",
+          "self_signed": "Accept self signed certificates"
         }
       }
     }

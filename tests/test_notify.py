@@ -1,17 +1,17 @@
-"""Test OVOS Home Assistant Integration switch."""
+"""Test HiveMind Home Assistant Integration switch."""
 from unittest.mock import call
 from unittest.mock import patch
 
-from custom_components.ovos import (
+from custom_components.hivemind import (
     async_setup_entry,
 )
-from custom_components.ovos.const import (
+from custom_components.hivemind.const import (
     DEFAULT_NAME,
 )
-from custom_components.ovos.const import (
+from custom_components.hivemind.const import (
     DOMAIN,
 )
-from custom_components.ovos.const import (
+from custom_components.hivemind.const import (
     SWITCH,
 )
 from homeassistant.components.switch import SERVICE_TURN_OFF
@@ -31,7 +31,7 @@ async def test_switch_services(hass):
 
     # Functions/objects can be patched directly in test code as well and can be used to test
     # additional things, like whether a function was called or what arguments it was called with
-    with patch("custom_components.ovos.OvosApiClient.async_set_title") as title_func:
+    with patch("custom_components.hivemind.HiveMindApiClient.async_set_title") as title_func:
         await hass.services.async_call(
             SWITCH,
             SERVICE_TURN_OFF,

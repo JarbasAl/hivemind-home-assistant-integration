@@ -1,4 +1,4 @@
-"""Global fixtures for OVOS Home Assistant Integration integration."""
+"""Global fixtures for HiveMind Home Assistant Integration integration."""
 from unittest.mock import patch
 
 import pytest
@@ -23,7 +23,7 @@ def skip_notifications_fixture():
 @pytest.fixture(name="bypass_get_data")
 def bypass_get_data_fixture():
     """Skip calls to get data from API."""
-    with patch("custom_components.ovos.OvosApiClient.async_get_data"):
+    with patch("custom_components.hivemind.HiveMindApiClient.async_get_data"):
         yield
 
 
@@ -33,7 +33,7 @@ def bypass_get_data_fixture():
 def error_get_data_fixture():
     """Simulate error when retrieving data from API."""
     with patch(
-        "custom_components.ovos.OvosApiClient.async_get_data",
+        "custom_components.hivemind.HiveMindApiClient.async_get_data",
         side_effect=Exception,
     ):
         yield

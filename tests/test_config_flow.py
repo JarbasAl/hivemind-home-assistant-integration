@@ -1,10 +1,10 @@
-"""Test the OVOS config flow."""
+"""Test the HiveMind config flow."""
 from unittest.mock import patch
 
 import aiohttp
 from homeassistant import config_entries
 from homeassistant import data_entry_flow
-from homeassistant.components.ovos.const import DOMAIN
+from homeassistant.components.hivemind.const import DOMAIN
 from homeassistant.const import CONF_PORT
 from homeassistant.const import CONF_URL
 from homeassistant.core import HomeAssistant
@@ -32,7 +32,7 @@ async def test_connection_error(hass: HomeAssistant) -> None:
     assert result["step_id"] == "user"
 
     with patch(
-        "homeassistant.components.ovos.config_flow.OvosNotificationService.authenticate",
+        "homeassistant.components.hivemind.config_flow.HiveMindNotificationService.authenticate",
         side_effect=aiohttp.ClientError,
     ):
         result2 = await hass.config_entries.flow.async_configure(
@@ -55,13 +55,13 @@ async def test_full_flow_implementation(hass: HomeAssistant) -> None:
     assert result["step_id"] == "user"
 
     with patch(
-        "homeassistant.components.ovos.config_flow.OvosNotificationService.authenticate",
+        "homeassistant.components.hivemind.config_flow.HiveMindNotificationService.authenticate",
         return_value=True,
     ), patch(
-        "homeassistant.components.ovos.config_flow.OvosNotificationService.username",
+        "homeassistant.components.hivemind.config_flow.HiveMindNotificationService.username",
         "some_name",
     ), patch(
-        "homeassistant.components.ovos.async_setup_entry",
+        "homeassistant.components.hivemind.async_setup_entry",
         return_value=True,
     ):
         result2 = await hass.config_entries.flow.async_configure(

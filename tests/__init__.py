@@ -1,1 +1,1 @@
-"""Tests for OVOS Home Assistant Integration integration."""
+"""Tests for HiveMind Home Assistant Integration integration."""

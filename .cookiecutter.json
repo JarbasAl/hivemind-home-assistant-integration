@@ -1,11 +1,11 @@
 {
-  "_output_dir": "/Users/Mike/Documents/coding/ovos-home-assistant-integration",
+  "_output_dir": "/Users/Mike/Documents/coding/hivemind-home-assistant-integration",
   "_template": "gh:oncleben31/cookiecutter-homeassistant-custom-component",
-  "class_name_prefix": "Ovos",
-  "domain_name": "ovos",
-  "friendly_name": "OVOS Home Assistant Integration",
-  "github_user": "mikejgray",
-  "project_name": "ovos-home-assistant-integration",
+  "class_name_prefix": "HiveMind",
+  "domain_name": "hivemind",
+  "friendly_name": "HiveMind Home Assistant Integration",
+  "github_user": "JarbasAI",
+  "project_name": "hivemind-home-assistant-integration",
   "test_suite": "yes",
   "version": "0.0.1"
 }
