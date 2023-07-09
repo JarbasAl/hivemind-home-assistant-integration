@@ -15,6 +15,7 @@
           "hm_port": "HiveMind Port",
           "key": "HiveMind Access Key",
           "pswd": "HiveMind Password",
+          "hm_name": "Friendly Device Name",
           "self_signed": "Accept self signed certificates"
         }
       }

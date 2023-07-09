@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.typing import DiscoveryInfoType
 from hivemind_bus_client import Message
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ def get_service(
         discovery_info: DiscoveryInfoType | None = None,
 ) -> HiveMindNotificationService:
     """Get the HiveMind notification service."""
-    return HiveMindNotificationService(**hass.data["hivemind"])
+    return HiveMindNotificationService(**hass.data[DOMAIN])
 
 
 class HiveMindNotificationService(BaseNotificationService):
@@ -35,9 +36,8 @@ class HiveMindNotificationService(BaseNotificationService):
         self.hm_host = hm_host
         self.self_signed = self_signed
         self.bus = None
-        self._connect()
 
-    def _connect(self):
+    def connect(self):
         try:
             self.bus = HiveMessageBusClient(key=self.key,
                                             password=self.pswd,
@@ -46,8 +46,10 @@ class HiveMindNotificationService(BaseNotificationService):
                                             useragent="HomeAssistantV0.0.1",
                                             self_signed=self.self_signed)
             self.bus.connect()
+            return True
         except:
-            _LOGGER.error("Failed to connect to HiveMind, will retry on next notify call")
+            _LOGGER.error("Failed to connect to HiveMind")
+            return False
 
     def _reconnect(self):
         if self.bus:
