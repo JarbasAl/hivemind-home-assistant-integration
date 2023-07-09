@@ -19,33 +19,29 @@ _LOGGER = logging.getLogger(__name__)
 class HiveMindNotificationService(BaseNotificationService):
     """The HiveMind Notification Service."""
 
-    def __init__(self, key: str, pswd: str, host: str, port: int = 5678,
+    def __init__(self, key: str, password: str, host: str, port: int = 5678,
                  self_signed: bool = False, **kwargs) -> None:
         """Initialize the service."""
         self.key = key
-        self.pswd = pswd
+        self.password = password
         self.port = port
         self.host = host
         self.self_signed = self_signed
-        self.bus = None
-
-    def _connect(self):
         self.bus = HiveMessageBusClient(key=self.key,
-                                        password=self.pswd,
+                                        password=self.password,
                                         port=self.port,
                                         host=self.host,
                                         useragent="HomeAssistantV0.0.1",
                                         self_signed=self.self_signed)
         self.bus.connect()
+        self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
+        self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
 
-    def _reconnect(self):
-        if self.bus:
-            try:
-                self.bus.close()
-            except:
-                pass
-            self.bus = None
-        self._connect()
+    def handle_tts_start(self, message):
+        _LOGGER.info("TTS started on OVOS device")
+
+    def handle_tts_end(self, message):
+        _LOGGER.info("TTS ended on OVOS device")
 
     def send_message(
             self, message: str = "", **kwargs: Any
@@ -59,17 +55,9 @@ class HiveMindNotificationService(BaseNotificationService):
         payload = HiveMessage(HiveMessageType.BUS, Message("speak", data))
         try:
             _LOGGER.log(level=3, msg=kwargs)
-            if self.bus is None:
-                self._connect()
             self.bus.emit(payload)
         except:
             _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
-
-            try:
-                self._reconnect()
-                self.bus.emit(payload)
-            except:
-                _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
 
 
 def get_service(
