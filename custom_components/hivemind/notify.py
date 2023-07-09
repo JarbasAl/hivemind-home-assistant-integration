@@ -26,6 +26,10 @@ async def async_setup_entry(
         async_add_entities,
 ):
     """Setup from a config entry created in the integrations UI."""
+
+    hass.data.setdefault("notify", {})
+    hass.data["notify"][config_entry["name"]] = config_entry
+
     async_add_entities([HiveMindNotificationService(**config_entry)], True)
 
 
