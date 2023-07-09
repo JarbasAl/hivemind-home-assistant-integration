@@ -11,12 +11,22 @@ from homeassistant.components.notify import (
     ATTR_TARGET,
     BaseNotificationService,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 from json_database import JsonStorage
 from ovos_bus_client import Message
 
 _LOGGER = logging.getLogger(__name__)
+
+
+async def async_setup_entry(
+        hass: HomeAssistant,
+        config_entry: ConfigEntry,
+        async_add_entities,
+):
+    """Setup from a config entry created in the integrations UI."""
+    async_add_entities([HiveMindNotificationService(**config_entry)], True)
 
 
 class HiveMindNotificationService(BaseNotificationService):
@@ -40,8 +50,8 @@ class HiveMindNotificationService(BaseNotificationService):
         #  FileNotFoundError: [Errno 2] No such file or directory: '/root/.config/hivemind/unnamed-node.asc'
         identity_file = JsonStorage(f"{os.path.dirname(__file__)}/_identity.json")
         self.bus.connect(identity=NodeIdentity(identity_file))
-        #self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
-        #self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
+        # self.bus.on_mycroft("recognizer_loop:output_start", self.handle_tts_start)
+        # self.bus.on_mycroft("recognizer_loop:output_end", self.handle_tts_end)
 
     def handle_tts_start(self, message):
         _LOGGER.info("TTS started on OVOS device")

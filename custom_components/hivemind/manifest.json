@@ -2,7 +2,7 @@
   "domain": "hivemind",
   "name": "HiveMind",
   "codeowners": ["@JarbasAI"],
-  "config_flow": false,
+  "config_flow": true,
   "documentation": "https://github.com/JarbasHiveMind/hivemind_websocket_client",
   "integration_type": "device",
   "iot_class": "assumed_state",
