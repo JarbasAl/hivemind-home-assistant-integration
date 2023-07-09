@@ -7,6 +7,9 @@
   "integration_type": "device",
   "iot_class": "assumed_state",
   "loggers": ["hivemind_bus_client"],
-  "requirements": ["git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git@dev#hivemind_bus_client==0.0.3"],
+  "requirements": [
+    "git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git@dev#hivemind_bus_client==0.0.3",
+    "git+https://github.com/JarbasHiveMind/poorman_handshake.git@dev#poorman_handshake==0.2.0"
+  ],
   "version": "0.0.1"
 }
