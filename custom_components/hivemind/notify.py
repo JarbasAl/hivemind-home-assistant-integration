@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.typing import DiscoveryInfoType
 from ovos_bus_client import Message
+
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -28,7 +29,8 @@ def get_service(
 class HiveMindNotificationService(BaseNotificationService):
     """The HiveMind Notification Service."""
 
-    def __init__(self, key: str, pswd: str, host: str, port: int = 5678, self_signed: bool = False, **kwargs) -> None:
+    def __init__(self, key: str, pswd: str, host: str, port: int = 5678,
+                 self_signed: bool = False, **kwargs) -> None:
         """Initialize the service."""
         self.key = key
         self.pswd = pswd
@@ -59,13 +61,13 @@ class HiveMindNotificationService(BaseNotificationService):
             self, message: str = "", lang: str = "en-us", **kwargs: Any
     ) -> None:
         """Send a message to HiveMind to speak on instance."""
+        payload = HiveMessage(HiveMessageType.BUS,
+                              payload=Message("speak",
+                                              {"utterance": message, "lang": lang}))
         try:
             _LOGGER.log(level=3, msg=kwargs)
             if self.bus is None:
                 self._connect()
-            payload = HiveMessage(HiveMessageType.BUS,
-                                  payload=Message("speak",
-                                                  {"utterance": message, "lang": lang}))
             self.bus.emit(payload)
         except:
             _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
@@ -75,5 +77,3 @@ class HiveMindNotificationService(BaseNotificationService):
                 self.bus.emit(payload)
             except:
                 _LOGGER.log(level=1, msg="Error from HiveMind messagebus", exc_info=True)
-
-
