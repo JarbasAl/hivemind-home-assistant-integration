@@ -26,6 +26,12 @@ custom_components/hivemind/manifest.json
 custom_components/hivemind/notify.py
 ```
 
+## HiveMind setup
+
+create credentials and allow the speak message to be injected hivemind side
+
+![](https://user-images.githubusercontent.com/25036977/247607592-754c3635-d16c-4e97-8203-fae973dbd722.png)
+
 ## Configuration
 
 In `configuration.yaml`:
