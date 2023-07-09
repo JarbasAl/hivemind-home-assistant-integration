@@ -5,12 +5,12 @@ import logging
 from typing import Any
 
 import voluptuous as vol
+from hivemind_bus_client.client import HiveMessageBusClient
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
-from .notify import HiveMindNotificationService
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,16 +32,15 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
     try:
-        hm = HiveMindNotificationService(
-            data["key"],
-            data["pswd"],
-            data["hm_host"],
-            data["hm_port"],
-            data["self_signed"]
+        hm = HiveMessageBusClient(
+            key=data["key"],
+            password=data["pswd"],
+            host=data["hm_host"],
+            port=data["hm_port"],
+            self_signed=data["self_signed"]
         )
-        if not hm.connect():
-            raise InvalidAuth
-        hm.bus.close()
+        hm.connect()
+        hm.close()
     except Exception as exc:  # pylint: disable=broad-except
         raise CannotConnect() from exc
 
@@ -59,6 +58,8 @@ class HiveMindConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if info is not None:
             try:
                 info = await validate_input(self.hass, info)
+                return self.async_create_entry(title=info["hm_name"],
+                                               data=info)
             except CannotConnect:
                 errors["base"] = "cannot_connect"
             except InvalidAuth:
@@ -66,9 +67,6 @@ class HiveMindConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except Exception:  # pylint: disable=broad-except
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
-            else:
-                return self.async_create_entry(title=info["hm_name"],
-                                               data=info)
 
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA
