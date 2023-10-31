@@ -30,16 +30,17 @@ class HiveMindNotificationService(BaseNotificationService):
         self.port = port
         self.host = host
         self.self_signed = self_signed
+        # NOTE: we explicitly pass a identity file to work around HA being root
+        #  FileNotFoundError: [Errno 2] No such file or directory: '/root/.config/hivemind/unnamed-node.asc'
+        identity_file = JsonStorage(f"{os.path.dirname(__file__)}/_identity.json")
         self.bus = HiveMessageBusClient(key=self.key,
                                         password=self.password,
                                         port=self.port,
                                         host=self.host,
                                         useragent="HomeAssistantV0.0.1",
-                                        self_signed=self.self_signed)
-        # NOTE: we explicitly pass a identity file to work around HA being root
-        #  FileNotFoundError: [Errno 2] No such file or directory: '/root/.config/hivemind/unnamed-node.asc'
-        identity_file = JsonStorage(f"{os.path.dirname(__file__)}/_identity.json")
-        self.bus.connect(identity=NodeIdentity(identity_file))
+                                        self_signed=self.self_signed,
+                                        identity=NodeIdentity(identity_file))
+        self.bus.connect()
 
     def send_message(
             self, message: str = "", **kwargs: Any
